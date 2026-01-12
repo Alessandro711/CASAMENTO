@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gerenciador de Casamento</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{
+      --bg:#0b1020; --bg2:#0a0f1e; --panel:#121832; --panel2:#0f1326; --stroke:#263253; --text:#e9ecf1; --muted:#9aa3b2; --brand:#6aa2ff; --brand2:#8bd3ff;
+      --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:linear-gradient(180deg,var(--bg), var(--bg2) 30%, var(--bg)); transition:background 200ms ease}
+    .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+    aside{background:linear-gradient(180deg,var(--panel2),var(--panel));border-right:1px solid var(--stroke);padding:22px 16px;position:sticky;top:0;height:100vh}
+    .brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+    .logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 6px 22px rgba(0,0,0,.25)}
+    .brand h1{font-size:16px;letter-spacing:.3px;margin:0}
+    nav{display:flex;flex-direction:column;gap:6px}
+    .nav-btn{appearance:none;border:none;background:none;text-align:left;color:var(--muted);padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:10px}
+    .nav-btn.active,.nav-btn:hover{background:rgba(106,162,255,.12);color:var(--text)}
+    .content{padding:26px 28px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{appearance:none;border:none;border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer;color:#0a0f1e}
+    .btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 8px 22px rgba(0,0,0,.28)}
+    .btn-ghost{background:#1c2444;color:var(--text);border:1px solid var(--stroke)}
+    .btn-danger{background:var(--danger);color:#fff}
+    .grid{display:grid;gap:16px}
+    .grid.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--stroke);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .card h3{margin:0 0 8px 0;font-size:14px;color:var(--muted);font-weight:600}
+    .kpi{font-size:28px;font-weight:800;letter-spacing:.3px}
+    .kpi-sm{font-size:22px;font-weight:800}
+    .sub{color:var(--muted);font-size:12px}
+    .table{width:100%;border-collapse:collapse}
+    .table th,.table td{border-bottom:1px solid var(--stroke);padding:10px 8px;text-align:left;font-size:14px}
+    .table th{color:var(--muted);font-weight:600}
+    .row-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .input, select{background:#101632;border:1px solid var(--stroke);border-radius:10px;padding:10px 12px;color:var(--text);width:100%}
+    .form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .section-header{display:flex;justify-content:space-between;align-items:center;margin:10px 0 8px;gap:12px;flex-wrap:wrap}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700}
+    .pill.ok{background:rgba(34,197,94,.15);color:#86efac}
+    .pill.warn{background:rgba(245,158,11,.15);color:#fcd34d}
+    .pill.danger{background:rgba(239,68,68,.15);color:#fecaca}
+    .muted{color:var(--muted)}
+    .sr{position:absolute;left:-9999px}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(3,6,20,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+    .modal.show{display:flex}
+    .modal .panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--stroke);border-radius:16px;padding:16px;max-width:1040px;width:100%}
+    .panel header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:12px}
+
+    /* Preview chips */
+    .swatches{display:flex;gap:6px;flex-wrap:wrap}
+    .chip{width:28px;height:28px;border-radius:8px;border:1px solid var(--stroke)}
+
+    /* error toast */
+    .errorbar{position:fixed;left:16px;right:16px;bottom:16px;z-index:99;display:none}
+    .errorbar.show{display:block}
+    .errorbar .inner{background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);border-radius:14px;padding:12px 14px;backdrop-filter: blur(6px)}
+    .errorbar .title{font-weight:800}
+    .errorbar .msg{margin-top:6px;color:#fecaca;font-size:12px;white-space:pre-wrap}
+
+    @media (max-width: 1280px){ .grid.cols-4{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width: 1100px){ .app{grid-template-columns:1fr} aside{position:static;height:auto} }
+    @media (max-width: 860px){ .grid.cols-3{grid-template-columns:1fr} .form-grid{grid-template-columns:1fr 1fr} }
+    @media (max-width: 560px){ .form-grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>Gerenciador de Casamento</h1>
+      </div>
+      <nav id="nav">
+        <button class="nav-btn active" data-view="dashboard">📊 Dashboard</button>
+        <button class="nav-btn" data-view="financeiro">💰 Financeiro</button>
+        <button class="nav-btn" data-view="tarefas">🗓️ Tarefas</button>
+        <button class="nav-btn" data-view="convidados">🎉 Convidados</button>
+        <button class="nav-btn" data-view="padrinhos">🧑‍🤝‍🧑 Padrinhos</button>
+        <button class="nav-btn" data-view="fornecedores">💼 Fornecedores</button>
+        <button class="nav-btn" data-view="presentes">🎁 Presentes</button>
+        <button class="nav-btn" data-view="config">⚙️ Configurações</button>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <div style="font-weight:800;font-size:20px">Painel do Casamento</div>
+          <div class="muted" style="font-size:12px">Controle completo: orçamento, tarefas, convidados, padrinhos e fornecedores</div>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-ghost" id="btn-export">Exportar JSON</button>
+          <label class="btn btn-ghost" for="import-file" style="cursor:pointer">Importar JSON</label>
+          <input id="import-file" type="file" accept="application/json" class="sr" />
+          <button class="btn btn-ghost" id="btn-testes">Autoteste</button>
+          <button class="btn btn-danger" id="btn-reset">Zerar Dados</button>
+        </div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <section id="view-dashboard" class="view">
+        <div class="grid cols-4">
+          <div class="card"><h3>Orçamento Usado</h3><div class="kpi" id="kpi-orcamento">R$ 0</div><div class="sub" id="kpi-orcamento-sub">Previsto R$ 0</div></div>
+          <div class="card"><h3>Percentual Usado</h3><div class="kpi" id="kpi-perc">0%</div><div class="sub" id="kpi-saldo">Saldo: R$ 0</div></div>
+          <div class="card"><h3>Dias até o Casamento</h3><div class="kpi" id="kpi-dias">–</div><div class="sub" id="kpi-data"></div></div>
+          <div class="card"><h3>Convidados</h3><div class="kpi" id="kpi-convidados">0</div><div class="sub" id="kpi-total-convidados">0 no total</div></div>
+        </div>
+        <div class="grid cols-4" style="margin-top:16px">
+          <div class="card"><h3>Tarefas</h3><div class="kpi-sm" id="kpi-tarefas-pend">0 pendentes</div><div class="sub" id="kpi-tarefas-ok">0 concluídas</div></div>
+          <div class="card"><h3>Padrinhos</h3><div class="kpi-sm" id="kpi-padrinhos-conf">0 confirmados</div><div class="sub" id="kpi-padrinhos-total">0 casais</div></div>
+          <div class="card"><h3>Fornecedores</h3><div class="kpi-sm" id="kpi-forn-fechados">0 contratados</div><div class="sub" id="kpi-forn-total">0 no total</div></div>
+          <div class="card"><h3>Presentes</h3><div class="kpi-sm" id="kpi-presentes-ok">0 recebidos</div><div class="sub" id="kpi-presentes-total">0 itens</div></div>
+        </div>
+        <div class="grid cols-2" style="margin-top:16px">
+          <div class="card">
+            <div class="section-header">
+              <h3>Gastos por Categoria</h3>
+              <span class="pill ok" id="pill-saldo">Saldo OK</span>
+            </div>
+            <canvas id="chart-categorias" height="140"></canvas>
+          </div>
+          <div class="card">
+            <div class="section-header">
+              <h3>Tarefas Próximas</h3>
+              <button class="btn btn-primary" onclick="openModal('tarefas')">+ Nova Tarefa</button>
+            </div>
+            <table class="table" id="table-tarefas-proximas">
+              <thead><tr><th>Tarefa</th><th>Responsável</th><th>Prazo</th><th>Status</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- FINANCEIRO -->
+      <section id="view-financeiro" class="view" hidden>
+        <div class="section-header">
+          <h2 style="margin:0">Financeiro</h2>
+          <button class="btn btn-primary" onclick="openModal('financeiro')">+ Lançamento</button>
+        </div>
+        <table class="table" id="table-financeiro">
+          <thead>
+            <tr>
+              <th>Categoria</th><th>Fornecedor</th><th>Previsto</th><th>Pago</th><th>Data Pagamento</th><th>Status</th><th>Obs</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- TAREFAS -->
+      <section id="view-tarefas" class="view" hidden>
+        <div class="section-header">
+          <h2 style="margin:0">Tarefas</h2>
+          <button class="btn btn-primary" onclick="openModal('tarefas')">+ Nova</button>
+        </div>
+        <table class="table" id="table-tarefas">
+          <thead><tr><th>Tarefa</th><th>Responsável</th><th>Prazo</th><th>Status</th><th>Obs</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- CONVIDADOS -->
+      <section id="view-convidados" class="view" hidden>
+        <div class="section-header">
+          <h2 style="margin:0">Convidados</h2>
+          <button class="btn btn-primary" onclick="openModal('convidados')">+ Adicionar</button>
+        </div>
+        <table class="table" id="table-convidados">
+          <thead><tr><th>Nome</th><th>Acompanhantes</th><th>Contato</th><th>Confirmação</th><th>Mesa</th><th>Obs</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- PADRINHOS -->
+      <section id="view-padrinhos" class="view" hidden>
+        <div class="section-header">
+          <h2 style="margin:0">Padrinhos & Madrinhas</h2>
+          <button class="btn btn-primary" onclick="openModal('padrinhos')">+ Adicionar</button>
+        </div>
+        <table class="table" id="table-padrinhos">
+          <thead>
+            <tr>
+              <th>Padrinho</th><th>Lado</th><th>Confirmação</th>
+              <th>Madrinha</th><th>Lado</th><th>Confirmação</th>
+              <th>Obs</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- FORNECEDORES -->
+      <section id="view-fornecedores" class="view" hidden>
+        <div class="section-header">
+          <h2 style="margin:0">Fornecedores</h2>
+          <button class="btn btn-primary" onclick="openModal('fornecedores')">+ Adicionar</button>
+        </div>
+        <table class="table" id="table-fornecedores">
+          <thead><tr><th>Nome</th><th>Serviço</th><th>Contato</th><th>Valor</th><th>Pagamento</th><th>Avaliação</th><th>Documento</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- PRESENTES -->
+      <section id="view-presentes" class="view" hidden>
+        <div class="section-header">
+          <h2 style="margin:0">Presentes</h2>
+          <button class="btn btn-primary" onclick="openModal('presentes')">+ Adicionar</button>
+        </div>
+        <table class="table" id="table-presentes">
+          <thead><tr><th>Item</th><th>Loja/Link</th><th>Valor</th><th>Status</th><th>Agradecimento</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- CONFIG/TEMAS -->
+      <section id="view-config" class="view" hidden>
+        <div class="card">
+          <h3>Configurações Gerais</h3>
+          <div class="form-grid">
+            <div>
+              <label>Data do Casamento</label>
+              <input class="input" type="date" id="cfg-data" />
+            </div>
+            <div>
+              <label>Orçamento Previsto (R$)</label>
+              <input class="input" type="number" id="cfg-orcamento" placeholder="80000" />
+            </div>
+            <div>
+              <label>Moeda (símbolo)</label>
+              <input class="input" id="cfg-moeda" placeholder="R$" maxlength="4" />
+            </div>
+            <div>
+              <label>Tema Ativo</label>
+              <select class="input" id="cfg-tema"></select>
+            </div>
+            <div style="align-self:end; display:flex; gap:10px; flex-wrap:wrap">
+              <button class="btn btn-primary" id="btn-salvar-config" type="button">Salvar</button>
+              <button class="btn btn-ghost" id="btn-editor-tema" type="button">Editor de Tema</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Temas Personalizados Salvos</h3>
+          <div id="custom-theme-list" class="grid cols-3"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal Genérico de CRUD -->
+  <div class="modal" id="modal">
+    <div class="panel">
+      <header>
+        <strong id="modal-title">Novo</strong>
+        <button class="btn btn-ghost" onclick="closeModal()" type="button">Fechar</button>
+      </header>
+      <form id="modal-form" class="form-grid"></form>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+        <button class="btn btn-ghost" onclick="closeModal()" type="button">Cancelar</button>
+        <button class="btn btn-primary" id="modal-save" type="button">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Editor de Tema (PRO) -->
+  <div class="modal" id="theme-modal">
+    <div class="panel">
+      <header>
+        <strong>Editor de Tema</strong>
+        <button class="btn btn-ghost" onclick="closeThemeModal()" type="button">Fechar</button>
+      </header>
+      <div class="grid cols-2">
+        <div>
+          <div class="form-grid" id="theme-form"></div>
+          <div class="swatches" id="swatches" style="margin-top:8px"></div>
+          <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+            <input class="input" id="theme-name" placeholder="Nome do tema (ex: Azul Royal)" style="flex:1" />
+            <button class="btn btn-primary" id="btn-save-theme" type="button">Salvar Tema</button>
+            <button class="btn btn-ghost" id="btn-apply-theme" type="button">Aplicar Agora</button>
+            <button class="btn btn-ghost" id="btn-reset-theme" type="button">Restaurar Padrão</button>
+          </div>
+          <div id="contrast-msg" class="sub" style="margin-top:8px"></div>
+        </div>
+        <div>
+          <div class="card" id="preview-card">
+            <h3>Prévia</h3>
+            <div class="kpi">R$ 12.345,67</div>
+            <div class="sub">Previsto R$ 80.000,00</div>
+            <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap">
+              <button class="btn btn-primary" type="button">Botão Primário</button>
+              <button class="btn btn-ghost" type="button">Botão Secundário</button>
+            </div>
+          </div>
+          <table class="table" style="margin-top:12px">
+            <thead><tr><th>Coluna</th><th>Outro</th></tr></thead>
+            <tbody><tr><td>Dado</td><td>Exemplo</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error bar -->
+  <div class="errorbar" id="errorbar">
+    <div class="inner">
+      <div class="title">Erro no app</div>
+      <div class="msg" id="errorbar-msg"></div>
+    </div>
+  </div>
+
+  <script>
+    // =====================
+    // Diagnóstico: se ocorrer erro JS, mostramos no rodapé.
+    // =====================
+    const errorbar = document.getElementById('errorbar');
+    const errorbarMsg = document.getElementById('errorbar-msg');
+    function showError(msg){
+      errorbarMsg.textContent = String(msg || 'Erro desconhecido');
+      errorbar.classList.add('show');
+      console.error(msg);
+    }
+    window.addEventListener('error', (e)=> showError(e.message + (e.filename ? `\n${e.filename}:${e.lineno}:${e.colno}` : '')));
+    window.addEventListener('unhandledrejection', (e)=> showError(e.reason?.message || String(e.reason || 'Promise rejeitada')));
+
+    // =====================
+    // Persistência
+    // =====================
+    const LS_KEY = 'wedding-manager-v6';
+    const defaultState = {
+      settings:{date:'', budget:0, currency:'R$', theme:'ocean', customThemes:[]},
+      financeiro:[], tarefas:[], convidados:[], padrinhos:[], fornecedores:[], presentes:[]
+    };
+    let state = load();
+    function load(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        return raw ? JSON.parse(raw) : structuredClone(defaultState);
+      }catch(e){
+        showError('Falha ao carregar LocalStorage: ' + e.message);
+        return structuredClone(defaultState);
+      }
+    }
+    function save(){
+      try{
+        localStorage.setItem(LS_KEY, JSON.stringify(state));
+        renderAll();
+      }catch(e){
+        showError('Falha ao salvar LocalStorage: ' + e.message);
+      }
+    }
+
+    // =====================
+    // Temas
+    // =====================
+    const THEME_KEYS = ['bg','bg2','panel','panel2','stroke','text','muted','brand','brand2'];
+    const BUILTIN_THEMES = {
+      ocean:{ bg:'#0b1020', bg2:'#0a0f1e', panel:'#121832', panel2:'#0f1326', stroke:'#263253', text:'#e9ecf1', muted:'#9aa3b2', brand:'#6aa2ff', brand2:'#8bd3ff'},
+      rose: { bg:'#1c0b13', bg2:'#1a0a12', panel:'#2a1020', panel2:'#1d0d17', stroke:'#3a1427', text:'#ffeaf1', muted:'#f4b6c8', brand:'#ff6aa6', brand2:'#ffc1d6'},
+      emerald:{ bg:'#081610', bg2:'#07140f', panel:'#0f251d', panel2:'#0b1d17', stroke:'#144434', text:'#e7fff6', muted:'#a9dac8', brand:'#34d399', brand2:'#a7f3d0'}
+    };
+    function getThemeVarsByName(name){
+      const custom=(state.settings.customThemes||[]).find(t=>t.name===name);
+      return custom ? custom.vars : (BUILTIN_THEMES[name]||BUILTIN_THEMES.ocean);
+    }
+    function applyThemeByName(name){ applyTheme(getThemeVarsByName(name)); }
+    function applyTheme(vars){
+      const r=document.documentElement;
+      const base = BUILTIN_THEMES.ocean;
+      THEME_KEYS.forEach(k=> r.style.setProperty('--'+k, (vars && vars[k]) ? vars[k] : base[k]));
+    }
+
+    // Helpers
+    const fmtMoney=(v)=>{ const cur=state.settings.currency||'R$'; const n=Number(v||0); return cur+' '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); };
+    const byDateAsc=(a,b)=> new Date(a.prazo||a.data||0) - new Date(b.prazo||b.data||0);
+
+    // =====================
+    // Navegação
+    // =====================
+    document.querySelectorAll('.nav-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const view=btn.dataset.view;
+        document.querySelectorAll('.view').forEach(v=>v.hidden=true);
+        const target = document.querySelector('#view-'+view);
+        if(target) target.hidden=false;
+      });
+    });
+
+    // =====================
+    // Export/Import/Reset
+    // =====================
+    document.getElementById('btn-export').addEventListener('click',()=>{
+      const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='casamento.json';
+      a.click();
+    });
+    document.getElementById('import-file').addEventListener('change',(e)=>{
+      const f=e.target.files[0];
+      if(!f) return;
+      const r=new FileReader();
+      r.onload=()=>{
+        try{ state=JSON.parse(r.result); save(); }
+        catch(err){ alert('Arquivo inválido'); }
+      };
+      r.readAsText(f);
+      e.target.value='';
+    });
+    document.getElementById('btn-reset').addEventListener('click',()=>{
+      if(confirm('Tem certeza que deseja ZERAR todos os dados?')){
+        state=structuredClone(defaultState);
+        save();
+      }
+    });
+
+    // =====================
+    // Configurações
+    // =====================
+    function refreshThemeSelect(){
+      const sel=document.getElementById('cfg-tema');
+      sel.innerHTML='';
+      Object.keys(BUILTIN_THEMES).forEach(k=>{
+        const o=document.createElement('option');
+        o.value=k; o.textContent=`${k} (padrão)`;
+        sel.appendChild(o);
+      });
+      (state.settings.customThemes||[]).forEach(t=>{
+        const o=document.createElement('option');
+        o.value=t.name; o.textContent=t.name;
+        sel.appendChild(o);
+      });
+      sel.value=state.settings.theme||'ocean';
+    }
+    document.getElementById('btn-salvar-config').addEventListener('click',()=>{
+      const date=document.getElementById('cfg-data').value;
+      const budget=Number(document.getElementById('cfg-orcamento').value||0);
+      const currency=document.getElementById('cfg-moeda').value||'R$';
+      const theme=document.getElementById('cfg-tema').value||'ocean';
+      state.settings={...state.settings,date,budget,currency,theme};
+      applyThemeByName(theme);
+      save();
+      alert('Configurações salvas!');
+    });
+    document.getElementById('btn-editor-tema').addEventListener('click',openThemeModal);
+
+    // =====================
+    // Modal genérico (CRUD)
+    // =====================
+    let modalCtx={section:null,index:null};
+    const modal=document.getElementById('modal');
+    const modalForm=document.getElementById('modal-form');
+    const modalTitle=document.getElementById('modal-title');
+
+    const schemas={
+      financeiro:[{key:'categoria',label:'Categoria'},{key:'fornecedor',label:'Fornecedor'},{key:'previsto',label:'Valor Previsto',type:'number'},{key:'pago',label:'Valor Pago',type:'number'},{key:'data',label:'Data Pagamento',type:'date'},{key:'status',label:'Status',type:'select',options:['pendente','50% pago','pago']},{key:'obs',label:'Observações'}],
+      tarefas:[{key:'tarefa',label:'Tarefa'},{key:'responsavel',label:'Responsável'},{key:'prazo',label:'Prazo',type:'date'},{key:'status',label:'Status',type:'select',options:['❌','⏳','✅']},{key:'obs',label:'Observações'}],
+      convidados:[{key:'nome',label:'Nome'},{key:'acompanhantes',label:'Acompanhantes',type:'number'},{key:'contato',label:'Contato'},{key:'confirmacao',label:'Confirmação',type:'select',options:['Pendente','Confirmado','Recusou']},{key:'mesa',label:'Mesa'},{key:'obs',label:'Observações'}],
+      padrinhos:[{key:'padrinho',label:'Nome do Padrinho'},{key:'padrinho_lado',label:'Lado (Padrinho)',type:'select',options:['Noivo','Noiva']},{key:'padrinho_conf',label:'Confirmação (Padrinho)',type:'select',options:['Pendente','Confirmado','Recusou']},{key:'madrinha',label:'Nome da Madrinha'},{key:'madrinha_lado',label:'Lado (Madrinha)',type:'select',options:['Noivo','Noiva']},{key:'madrinha_conf',label:'Confirmação (Madrinha)',type:'select',options:['Pendente','Confirmado','Recusou']},{key:'obs',label:'Observações'}],
+      fornecedores:[{key:'nome',label:'Nome'},{key:'servico',label:'Serviço'},{key:'contato',label:'Contato'},{key:'valor',label:'Valor',type:'number'},{key:'pagamento',label:'Pagamento'},{key:'avaliacao',label:'Avaliação (1-5)'},{key:'documento',label:'Documento (link)'}],
+      presentes:[{key:'item',label:'Item'},{key:'loja',label:'Loja / Link'},{key:'valor',label:'Valor',type:'number'},{key:'status',label:'Status',type:'select',options:['Pendente','Comprado','Entregue']},{key:'agradecimento',label:'Agradecimento',type:'select',options:['❌','✅']}]
+    };
+
+    function openModal(section,index=null){
+      modalCtx={section,index};
+      modalTitle.textContent=(index===null?'Novo ':'Editar ')+section.slice(0,1).toUpperCase()+section.slice(1);
+      modalForm.innerHTML='';
+      const schema=schemas[section];
+      const values=index===null? {}: state[section][index];
+
+      schema.forEach(field=>{
+        const wrap=document.createElement('div');
+        const label=document.createElement('label');
+        label.textContent=field.label;
+        wrap.appendChild(label);
+
+        let input;
+        if(field.type==='select'){
+          input=document.createElement('select');
+          input.className='input';
+          field.options.forEach(op=>{
+            const o=document.createElement('option');
+            o.value=op; o.textContent=op;
+            input.appendChild(o);
+          });
+          input.value=values[field.key]||field.options[0];
+        } else {
+          input=document.createElement('input');
+          input.className='input';
+          input.type=field.type||'text';
+          input.value=values[field.key]??'';
+        }
+        input.name=field.key;
+        wrap.appendChild(input);
+        modalForm.appendChild(wrap);
+      });
+
+      modal.classList.add('show');
+    }
+
+    function closeModal(){ modal.classList.remove('show'); }
+
+    document.getElementById('modal-save').addEventListener('click',()=>{
+      try{
+        const data=Object.fromEntries(new FormData(modalForm).entries());
+        const section=modalCtx.section;
+        ['previsto','pago','valor','avaliacao','acompanhantes'].forEach(k=>{ if(data[k]!==undefined) data[k]=Number(data[k]||0); });
+
+        if(section==='tarefas'&&!data.status) data.status='⏳';
+
+        if(modalCtx.index===null){ state[section].push(data); }
+        else { state[section][modalCtx.index]={...state[section][modalCtx.index],...data}; }
+
+        save();
+        closeModal();
+      }catch(e){
+        showError('Falha ao salvar modal: '+e.message);
+      }
+    });
+
+    // =====================
+    // Renderizações
+    // =====================
+    let chartCategorias;
+
+    function renderDashboard(){
+      const budget=Number(state.settings.budget||0);
+      const totalPago=state.financeiro.reduce((s,i)=>s+Number(i.pago||0),0);
+      const totalPrev=state.financeiro.reduce((s,i)=>s+Number(i.previsto||0),0);
+      document.getElementById('kpi-orcamento').textContent=fmtMoney(totalPago);
+      document.getElementById('kpi-orcamento-sub').textContent=`Previsto ${fmtMoney(budget||totalPrev)}`;
+
+      const perc=budget? Math.min(100, Math.round((totalPago/budget)*100)) : 0;
+      const saldo=budget? (budget-totalPago): 0;
+      document.getElementById('kpi-perc').textContent=(budget? perc:0)+'%';
+      document.getElementById('kpi-saldo').textContent='Saldo: '+fmtMoney(saldo);
+
+      const dateStr=state.settings.date;
+      const outDate=document.getElementById('kpi-data');
+      const outDias=document.getElementById('kpi-dias');
+      if(dateStr){
+        const diff=Math.ceil((new Date(dateStr)-new Date())/86400000);
+        outDias.textContent= diff>=0? diff: 'Passou';
+        outDate.textContent='Data marcada: '+new Date(dateStr).toLocaleDateString('pt-BR');
+      } else {
+        outDias.textContent='–';
+        outDate.textContent='Defina a data em Configurações';
+      }
+
+      const totalConv=state.convidados.length;
+      const conf=state.convidados.filter(c=>c.confirmacao==='Confirmado').length;
+      document.getElementById('kpi-convidados').textContent=conf;
+      document.getElementById('kpi-total-convidados').textContent=`${totalConv} no total`;
+
+      const pend=state.tarefas.filter(t=>t.status!=='✅').length;
+      const ok=state.tarefas.filter(t=>t.status==='✅').length;
+      document.getElementById('kpi-tarefas-pend').textContent=pend+' pendentes';
+      document.getElementById('kpi-tarefas-ok').textContent=ok+' concluídas';
+
+      const padrConf=state.padrinhos.filter(p=>p.padrinho_conf==='Confirmado'&&p.madrinha_conf==='Confirmado').length;
+      document.getElementById('kpi-padrinhos-conf').textContent=padrConf+' confirmados';
+      document.getElementById('kpi-padrinhos-total').textContent=state.padrinhos.length+' casais';
+
+      const fornFech=state.fornecedores.filter(f=>String(f.pagamento||'').toLowerCase().includes('pago')).length;
+      document.getElementById('kpi-forn-fechados').textContent=fornFech+' contratados';
+      document.getElementById('kpi-forn-total').textContent=state.fornecedores.length+' no total';
+
+      const prezOk=state.presentes.filter(p=>p.status==='Entregue').length;
+      document.getElementById('kpi-presentes-ok').textContent=prezOk+' recebidos';
+      document.getElementById('kpi-presentes-total').textContent=state.presentes.length+' itens';
+
+      const pill=document.getElementById('pill-saldo');
+      if(budget && totalPago>budget){ pill.textContent='Acima do Orçamento'; pill.className='pill danger'; }
+      else if(budget && totalPago>budget*0.8){ pill.textContent='Atenção ao Orçamento'; pill.className='pill warn'; }
+      else { pill.textContent='Saldo OK'; pill.className='pill ok'; }
+
+      // Tarefas próximas
+      const tbody=document.querySelector('#table-tarefas-proximas tbody');
+      tbody.innerHTML='';
+      state.tarefas
+        .filter(t=>t.status!=='✅'&&t.prazo)
+        .sort(byDateAsc)
+        .slice(0,6)
+        .forEach(t=>{
+          const tr=document.createElement('tr');
+          tr.innerHTML=`<td>${t.tarefa||''}</td><td>${t.responsavel||''}</td><td>${t.prazo||''}</td><td>${t.status||''}</td>`;
+          tbody.appendChild(tr);
+        });
+
+      // Chart
+      const canvas=document.getElementById('chart-categorias');
+      const ctx=canvas.getContext('2d');
+      const brand=getComputedStyle(document.documentElement).getPropertyValue('--brand').trim();
+      const brand2=getComputedStyle(document.documentElement).getPropertyValue('--brand2').trim();
+
+      const grad=ctx.createLinearGradient(0,0,0,180);
+      grad.addColorStop(0, brand);
+      grad.addColorStop(1, brand2+'22');
+
+      const byCat={};
+      state.financeiro.forEach(i=>{
+        const cat=i.categoria||'Outros';
+        byCat[cat]=(byCat[cat]||0)+Number(i.pago||0);
+      });
+      const labels=Object.keys(byCat);
+      const data=Object.values(byCat);
+
+      if(chartCategorias){ chartCategorias.destroy(); }
+      chartCategorias=new Chart(ctx,{
+        type:'bar',
+        data:{ labels, datasets:[{ data, backgroundColor:grad, borderColor:brand, borderWidth:1.5, borderRadius:8, hoverBorderWidth:2 }]},
+        options:{
+          animation:{duration:900, easing:'easeOutQuart'},
+          plugins:{legend:{display:false}, tooltip:{callbacks:{label:(c)=>' '+fmtMoney(c.raw)}}},
+          scales:{ x:{ grid:{display:false}}, y:{ beginAtZero:true, grid:{color:'rgba(255,255,255,.06)'} } }
+        }
+      });
+    }
+
+    function renderTable(section, tableId, cols){
+      const tbody=document.querySelector('#'+tableId+' tbody');
+      tbody.innerHTML='';
+      state[section].forEach((row,idx)=>{
+        const tr=document.createElement('tr');
+        const tds=cols.map(k=>{
+          let v=row[k]??'';
+          if(['previsto','pago','valor'].includes(k)) v=fmtMoney(v);
+          return `<td>${v}</td>`;
+        }).join('');
+        const actions=`<td><div class="row-actions"><button class="btn btn-ghost" onclick="openModal('${section}',${idx})" type="button">Editar</button><button class="btn btn-danger" onclick="delItem('${section}',${idx})" type="button">Excluir</button></div></td>`;
+        tr.innerHTML=tds+actions;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function delItem(section,idx){
+      if(confirm('Excluir este registro?')){
+        state[section].splice(idx,1);
+        save();
+      }
+    }
+
+    function renderFinanceiro(){ renderTable('financeiro','table-financeiro',['categoria','fornecedor','previsto','pago','data','status','obs']); }
+    function renderTarefas(){ renderTable('tarefas','table-tarefas',['tarefa','responsavel','prazo','status','obs']); }
+
+    // ✅ CORREÇÃO CRÍTICA: aqui tinha um ERRO DE SINTAXE (':' no lugar de ',')
+    function renderConvidados(){ renderTable('convidados','table-convidados',['nome','acompanhantes','contato','confirmacao','mesa','obs']); }
+
+    function renderPadrinhos(){
+      const tbody=document.querySelector('#table-padrinhos tbody');
+      tbody.innerHTML='';
+      state.padrinhos.forEach((row,idx)=>{
+        const tr=document.createElement('tr');
+        const cells=[
+          row.padrinho||'',row.padrinho_lado||'',row.padrinho_conf||'',
+          row.madrinha||'',row.madrinha_lado||'',row.madrinha_conf||'',
+          row.obs||''
+        ].map(v=>`<td>${v}</td>`).join('');
+        const actions=`<td><div class="row-actions"><button class="btn btn-ghost" onclick="openModal('padrinhos',${idx})" type="button">Editar</button><button class="btn btn-danger" onclick="delItem('padrinhos',${idx})" type="button">Excluir</button></div></td>`;
+        tr.innerHTML=cells+actions;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderFornecedores(){ renderTable('fornecedores','table-fornecedores',['nome','servico','contato','valor','pagamento','avaliacao','documento']); }
+    function renderPresentes(){ renderTable('presentes','table-presentes',['item','loja','valor','status','agradecimento']); }
+
+    function renderCustomThemesList(){
+      const wrap=document.getElementById('custom-theme-list');
+      wrap.innerHTML='';
+      (state.settings.customThemes||[]).forEach(t=>{
+        const card=document.createElement('div');
+        card.className='card';
+        card.innerHTML=`
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+            <div>
+              <strong>${t.name}</strong>
+              <div class="sub">Tema personalizado</div>
+            </div>
+            <div class="swatches">${THEME_KEYS.slice(0,6).map(k=>`<span class='chip' title='${k}' style='background:${t.vars[k]};'></span>`).join('')}</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-ghost" onclick="applyCustomTheme('${t.name}')" type="button">Aplicar</button>
+              <button class="btn btn-danger" onclick="deleteCustomTheme('${t.name}')" type="button">Excluir</button>
+            </div>
+          </div>`;
+        wrap.appendChild(card);
+      });
+    }
+
+    function applyCustomTheme(name){
+      state.settings.theme=name;
+      applyThemeByName(name);
+      save();
+    }
+
+    function deleteCustomTheme(name){
+      if(!confirm('Excluir o tema "'+name+'"?')) return;
+      state.settings.customThemes=(state.settings.customThemes||[]).filter(t=>t.name!==name);
+      if(state.settings.theme===name) state.settings.theme='ocean';
+      save();
+    }
+
+    function renderConfig(){
+      document.getElementById('cfg-data').value=state.settings.date||'';
+      document.getElementById('cfg-orcamento').value=state.settings.budget||0;
+      document.getElementById('cfg-moeda').value=state.settings.currency||'R$';
+      refreshThemeSelect();
+      renderCustomThemesList();
+    }
+
+    function renderAll(){
+      applyThemeByName(state.settings.theme||'ocean');
+      renderDashboard();
+      renderFinanceiro();
+      renderTarefas();
+      renderConvidados();
+      renderPadrinhos();
+      renderFornecedores();
+      renderPresentes();
+      renderConfig();
+    }
+
+    // =====================
+    // Editor de Tema (PRO)
+    // =====================
+    const themeModal=document.getElementById('theme-modal');
+    const themeForm=document.getElementById('theme-form');
+    const contrastMsg=document.getElementById('contrast-msg');
+
+    function openThemeModal(){
+      themeForm.innerHTML='';
+      const current=getThemeVarsByName(state.settings.theme||'ocean');
+      const groups=[['bg','bg2'],['panel','panel2','stroke'],['text','muted'],['brand','brand2']];
+      groups.forEach(gs=>{ gs.forEach(k=> themeForm.appendChild(colorRow(k,current[k])) ); });
+      updateSwatches(current);
+      livePreview(current);
+      themeModal.classList.add('show');
+    }
+
+    function closeThemeModal(){ themeModal.classList.remove('show'); }
+
+    function colorRow(key,val){
+      const wrap=document.createElement('div');
+      const label=document.createElement('label');
+      label.textContent=key;
+      wrap.appendChild(label);
+
+      const row=document.createElement('div');
+      row.style.display='flex';
+      row.style.gap='8px';
+
+      const color=document.createElement('input');
+      color.type='color';
+      color.value=val;
+      color.dataset.key=key;
+      color.style.width='48px';
+      color.style.height='42px';
+      color.style.padding='0';
+
+      const text=document.createElement('input');
+      text.className='input';
+      text.value=val;
+      text.dataset.key=key;
+      text.placeholder='#RRGGBB';
+
+      color.addEventListener('input',()=>{ text.value=color.value; livePreview(readThemeForm()); });
+      text.addEventListener('input',()=>{ if(/^#([0-9a-f]{3}){1,2}$/i.test(text.value)) { color.value=text.value; livePreview(readThemeForm()); }});
+
+      row.appendChild(color);
+      row.appendChild(text);
+      wrap.appendChild(row);
+      return wrap;
+    }
+
+    function readThemeForm(){
+      const vars={};
+      [...themeForm.querySelectorAll('input[data-key]')].forEach(i=> vars[i.dataset.key]=i.value );
+      return vars;
+    }
+
+    function updateSwatches(vars){
+      const box=document.getElementById('swatches');
+      box.innerHTML = THEME_KEYS.map(k=>`<span class='chip' title='${k}' style='background:${vars[k]};'></span>`).join('');
+    }
+
+    function contrastRatio(hex1,hex2){
+      function toL(h){
+        h=h.replace('#','');
+        if(h.length===3) h=[h[0]+h[0],h[1]+h[1],h[2]+h[2]].join('');
+        const r=parseInt(h.slice(0,2),16)/255;
+        const g=parseInt(h.slice(2,4),16)/255;
+        const b=parseInt(h.slice(4,6),16)/255;
+        const a=[r,g,b].map(v=> v<=0.03928? v/12.92: Math.pow((v+0.055)/1.055,2.4));
+        return .2126*a[0]+.7152*a[1]+.0722*a[2];
+      }
+      const L1=toL(hex1), L2=toL(hex2);
+      const lighter=Math.max(L1,L2), darker=Math.min(L1,L2);
+      return (lighter+0.05)/(darker+0.05);
+    }
+
+    function livePreview(vars){
+      updateSwatches(vars);
+      applyTheme(vars);
+      const r1=contrastRatio(vars.text, vars.bg);
+      const r2=contrastRatio(vars.text, vars.panel);
+      const ok1=r1>=4.5? 'OK': 'Fraco';
+      const ok2=r2>=4.5? 'OK': 'Fraco';
+      contrastMsg.textContent=`Contraste texto vs fundo: ${r1.toFixed(2)} (${ok1}) | texto vs painel: ${r2.toFixed(2)} (${ok2})`;
+    }
+
+    document.getElementById('btn-save-theme').addEventListener('click',()=>{
+      const name=(document.getElementById('theme-name').value||'').trim();
+      if(!name){ alert('Dê um nome ao tema.'); return; }
+      const vars=readThemeForm();
+      const exists=(state.settings.customThemes||[]).some(t=>t.name.toLowerCase()===name.toLowerCase());
+      if(exists && !confirm('Já existe um tema com esse nome. Substituir?')) return;
+      state.settings.customThemes=(state.settings.customThemes||[]).filter(t=>t.name.toLowerCase()!==name.toLowerCase());
+      state.settings.customThemes.push({name,vars});
+      state.settings.theme=name;
+      save();
+      refreshThemeSelect();
+      renderCustomThemesList();
+      alert('Tema salvo!');
+    });
+
+    document.getElementById('btn-apply-theme').addEventListener('click',()=>{
+      const vars=readThemeForm();
+      applyTheme(vars);
+      alert('Aplicado na visualização. Para manter, salve o tema.');
+    });
+
+    document.getElementById('btn-reset-theme').addEventListener('click',()=>{
+      const base=getThemeVarsByName(state.settings.theme||'ocean');
+      livePreview(base);
+    });
+
+    // =====================
+    // Autoteste
+    // =====================
+    function assert(name, pass){ return {name, pass: !!pass}; }
+    function runSelfTests(){
+      const results=[];
+      results.push(assert('THEME_KEYS inclui bg2/panel2/brand2', ['bg2','panel2','brand2'].every(k=>THEME_KEYS.includes(k))));
+      results.push(assert('Função openModal existe', typeof openModal==='function'));
+      results.push(assert('renderConvidados não quebra', (()=>{ try{ renderConvidados(); return true; }catch(e){ return false; } })()));
+      results.push(assert('Temas padrão >= 3', Object.keys(BUILTIN_THEMES).length>=3));
+      const fails = results.filter(r=>!r.pass);
+      alert(fails.length ? 'Falhas:\n'+fails.map(f=>'• '+f.name).join('\n') : `Todos os testes passaram! (${results.length}/${results.length})`);
+    }
+    document.getElementById('btn-testes').addEventListener('click', runSelfTests);
+
+    // =====================
+    // Seed + Boot
+    // =====================
+    (function boot(){
+      try{
+        const s=state;
+        if(s.financeiro.length===0 && s.tarefas.length===0 && s.convidados.length===0){
+          s.settings={date:'2026-06-20', budget:80000, currency:'R$', theme:'ocean', customThemes:[]};
+          s.financeiro.push(
+            {categoria:'Buffet', fornecedor:'Sabor & Festa', previsto:18000, pago:9000, data:'2026-02-10', status:'50% pago', obs:'Cardápio fechado'},
+            {categoria:'Decoração', fornecedor:'Flora Bella', previsto:7200, pago:0, data:'', status:'pendente', obs:'Ensaio 15/02'},
+            {categoria:'Música', fornecedor:'DJ Leo', previsto:3000, pago:0, data:'', status:'pendente', obs:'Playlist em andamento'}
+          );
+          s.tarefas.push(
+            {tarefa:'Fechar local', responsavel:'Noiva', prazo:'2026-01-30', status:'✅', obs:'Confirmado'},
+            {tarefa:'Escolher bolo', responsavel:'Ambos', prazo:'2026-02-20', status:'⏳', obs:'Degustação 12/02'},
+            {tarefa:'Enviar convites', responsavel:'Noivo', prazo:'2026-03-15', status:'❌', obs:'Aguardar lista final'}
+          );
+          s.convidados.push(
+            {nome:'João e Maria', acompanhantes:2, contato:'(99) 99999-9999', confirmacao:'Confirmado', mesa:'3', obs:''},
+            {nome:'Pedro Silva', acompanhantes:1, contato:'(99) 88888-8888', confirmacao:'Pendente', mesa:'', obs:'Aguardando confirmação'}
+          );
+          s.padrinhos.push(
+            {padrinho:'Carlos', padrinho_lado:'Noiva', padrinho_conf:'Confirmado', madrinha:'Ana', madrinha_lado:'Noiva', madrinha_conf:'Confirmado', obs:'Disponíveis 14/03'},
+            {padrinho:'Lucas', padrinho_lado:'Noivo', padrinho_conf:'Pendente', madrinha:'Paula', madrinha_lado:'Noivo', madrinha_conf:'Pendente', obs:'Viagem no período'}
+          );
+          s.fornecedores.push(
+            {nome:'Buffet Sabor & Festa', servico:'Alimentação', contato:'(99) 90000-0001', valor:18000, pagamento:'50% pago', avaliacao:'4', documento:'contrato.pdf'},
+            {nome:'DJ Leo', servico:'Música', contato:'(99) 91111-1111', valor:3000, pagamento:'Pendente', avaliacao:'5', documento:''}
+          );
+          s.presentes.push(
+            {item:'Conjunto de panelas', loja:'Magazine Luiza', valor:600, status:'Entregue', agradecimento:'✅'},
+            {item:'Passagem Lua de Mel', loja:'Amigo João', valor:2000, status:'Pendente', agradecimento:'❌'}
+          );
+          save();
+        } else {
+          renderAll();
+        }
+      }catch(e){
+        showError('Falha no boot: '+e.message);
+      }
+    })();
+
+    // =====================
+    // O que você espera?
+    // =====================
+    // Quando clicar em "+ Lançamento" / "+ Nova" / "+ Adicionar", o app deve abrir o modal.
+    // Se você quiser outro comportamento (ex.: ir para outra tela, inline edit), me diga.
+  </script>
+</body>
+</html>
