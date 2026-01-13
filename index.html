@@ -17,24 +17,20 @@
     *{box-sizing:border-box}
     html,body{height:100%}
     body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);
-      background:linear-gradient(180deg,var(--bg), var(--bg2) 30%, var(--bg));
-      transition:background 220ms ease, color 220ms ease;
-    }
+      background:linear-gradient(180deg,var(--bg), var(--bg2) 30%, var(--bg)); transition:background 200ms ease}
     .app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
     aside{background:linear-gradient(180deg,var(--panel2),var(--panel));border-right:1px solid var(--stroke);padding:22px 16px;position:sticky;top:0;height:100vh}
     .brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
     .logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 6px 22px rgba(0,0,0,.25)}
     .brand h1{font-size:16px;letter-spacing:.3px;margin:0}
     nav{display:flex;flex-direction:column;gap:6px}
-    .nav-btn{appearance:none;border:none;background:none;text-align:left;color:var(--muted);padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:700;display:flex;align-items:center;gap:10px}
+    .nav-btn{appearance:none;border:none;background:none;text-align:left;color:var(--muted);padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:10px}
     .nav-btn.active,.nav-btn:hover{background:rgba(106,162,255,.12);color:var(--text)}
     .content{padding:26px 28px}
     .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:12px;flex-wrap:wrap}
     .top-actions{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{appearance:none;border:none;border-radius:12px;padding:10px 14px;font-weight:800;cursor:pointer;color:#0a0f1e;transition:transform 120ms ease, filter 120ms ease}
-    .btn:active{transform:translateY(1px)}
-    .btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 10px 24px rgba(0,0,0,.28)}
-    .btn-primary:hover{filter:brightness(1.03)}
+    .btn{appearance:none;border:none;border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer}
+    .btn-primary{color:#0a0f1e;background:linear-gradient(135deg,var(--brand),var(--brand2));box-shadow:0 8px 22px rgba(0,0,0,.28)}
     .btn-ghost{background:#1c2444;color:var(--text);border:1px solid var(--stroke)}
     .btn-danger{background:var(--danger);color:#fff}
     .grid{display:grid;gap:16px}
@@ -42,19 +38,18 @@
     .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
     .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
     .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--stroke);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-    .card h3{margin:0 0 8px 0;font-size:14px;color:var(--muted);font-weight:700}
-    .kpi{font-size:28px;font-weight:900;letter-spacing:.3px}
-    .kpi-sm{font-size:22px;font-weight:900}
+    .card h3{margin:0 0 8px 0;font-size:14px;color:var(--muted);font-weight:600}
+    .kpi{font-size:28px;font-weight:800;letter-spacing:.3px}
+    .kpi-sm{font-size:22px;font-weight:800}
     .sub{color:var(--muted);font-size:12px}
     .table{width:100%;border-collapse:collapse}
     .table th,.table td{border-bottom:1px solid var(--stroke);padding:10px 8px;text-align:left;font-size:14px}
-    .table th{color:var(--muted);font-weight:700}
+    .table th{color:var(--muted);font-weight:600}
     .row-actions{display:flex;gap:8px;flex-wrap:wrap}
-    .input, select, textarea{background:#101632;border:1px solid var(--stroke);border-radius:10px;padding:10px 12px;color:var(--text);width:100%}
-    textarea{min-height:42px;resize:vertical}
+    .input, select{background:#101632;border:1px solid var(--stroke);border-radius:10px;padding:10px 12px;color:var(--text);width:100%}
     .form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
     .section-header{display:flex;justify-content:space-between;align-items:center;margin:10px 0 8px;gap:12px;flex-wrap:wrap}
-    .pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:900}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700}
     .pill.ok{background:rgba(34,197,94,.15);color:#86efac}
     .pill.warn{background:rgba(245,158,11,.15);color:#fcd34d}
     .pill.danger{background:rgba(239,68,68,.15);color:#fecaca}
@@ -67,31 +62,92 @@
     .modal .panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--stroke);border-radius:16px;padding:16px;max-width:1040px;width:100%}
     .panel header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:12px}
 
-    /* Theme chips */
     .swatches{display:flex;gap:6px;flex-wrap:wrap}
     .chip{width:28px;height:28px;border-radius:8px;border:1px solid var(--stroke)}
 
-    /* error toast */
     .errorbar{position:fixed;left:16px;right:16px;bottom:16px;z-index:99;display:none}
     .errorbar.show{display:block}
     .errorbar .inner{background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);border-radius:14px;padding:12px 14px;backdrop-filter: blur(6px)}
-    .errorbar .title{font-weight:900}
+    .errorbar .title{font-weight:800}
     .errorbar .msg{margin-top:6px;color:#fecaca;font-size:12px;white-space:pre-wrap}
+
+    /* Auth overlay */
+    .auth-wrap{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;z-index:80;
+      background:radial-gradient(1000px 600px at 20% 10%, rgba(106,162,255,.22), transparent 60%),
+                 radial-gradient(1000px 600px at 80% 90%, rgba(139,211,255,.18), transparent 60%),
+                 rgba(3,6,20,.75);}
+    .auth-wrap.show{display:flex}
+    .auth-card{max-width:520px;width:100%}
+    .auth-grid{display:grid;gap:10px}
+    .auth-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .tag{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--stroke);border-radius:999px;background:rgba(255,255,255,.04);color:var(--muted);font-size:12px}
 
     @media (max-width: 1280px){ .grid.cols-4{grid-template-columns:repeat(2,1fr)} }
     @media (max-width: 1100px){ .app{grid-template-columns:1fr} aside{position:static;height:auto} }
     @media (max-width: 860px){ .grid.cols-3{grid-template-columns:1fr} .form-grid{grid-template-columns:1fr 1fr} }
-    @media (max-width: 560px){ .form-grid{grid-template-columns:1fr} }
+    @media (max-width: 560px){ .form-grid{grid-template-columns:1fr} .auth-row{grid-template-columns:1fr} }
   </style>
 </head>
 
 <body>
-  <div class="app">
+  <!-- AUTH OVERLAY -->
+  <div class="auth-wrap show" id="auth-wrap">
+    <div class="card auth-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div class="brand" style="margin:0">
+          <div class="logo" aria-hidden="true"></div>
+          <h1>Gerenciador de Casamento</h1>
+        </div>
+        <span class="tag" id="auth-status">🔒 Faça login para sincronizar</span>
+      </div>
+
+      <div class="sub" style="margin-top:6px">
+        Suas alterações vão ficar salvas na nuvem e aparecer em qualquer navegador quando você entrar com o mesmo usuário.
+      </div>
+
+      <div class="auth-grid" style="margin-top:14px">
+        <div>
+          <label>Email</label>
+          <input class="input" id="auth-email" type="email" placeholder="seuemail@dominio.com" autocomplete="email">
+        </div>
+        <div>
+          <label>Senha</label>
+          <input class="input" id="auth-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+
+        <div class="auth-row">
+          <button class="btn btn-primary" id="btn-login" type="button">Entrar</button>
+          <button class="btn btn-ghost" id="btn-signup" type="button">Criar conta</button>
+        </div>
+
+        <div class="sub" id="auth-msg"></div>
+
+        <div style="border-top:1px solid var(--stroke); padding-top:12px; margin-top:4px">
+          <div class="sub">
+            <strong>Obs:</strong> Se você abrir em outro navegador, é só fazer login com o mesmo email/senha que seus dados carregam automaticamente.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app" id="app" style="filter: blur(8px); pointer-events:none; user-select:none;">
     <aside>
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
         <h1>Gerenciador de Casamento</h1>
       </div>
+
+      <div class="card" style="padding:12px; margin-bottom:12px">
+        <div class="sub">Conta conectada</div>
+        <div style="font-weight:800; margin-top:4px" id="user-email">–</div>
+        <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap">
+          <button class="btn btn-ghost" id="btn-cloud-sync" type="button">Sincronizar</button>
+          <button class="btn btn-danger" id="btn-logout" type="button">Sair</button>
+        </div>
+        <div class="sub" id="cloud-status" style="margin-top:8px">Aguardando login…</div>
+      </div>
+
       <nav id="nav">
         <button class="nav-btn active" data-view="dashboard">📊 Dashboard</button>
         <button class="nav-btn" data-view="financeiro">💰 Financeiro</button>
@@ -107,15 +163,15 @@
     <main class="content">
       <div class="topbar">
         <div>
-          <div style="font-weight:900;font-size:20px">Painel do Casamento</div>
-          <div class="muted" style="font-size:12px">Controle completo: orçamento, tarefas, convidados, padrinhos e fornecedores</div>
+          <div style="font-weight:800;font-size:20px">Painel do Casamento</div>
+          <div class="muted" style="font-size:12px">Orçamento, tarefas, convidados, padrinhos e fornecedores</div>
         </div>
         <div class="top-actions">
-          <button class="btn btn-ghost" id="btn-export" type="button">Exportar JSON</button>
+          <button class="btn btn-ghost" id="btn-export">Exportar JSON</button>
           <label class="btn btn-ghost" for="import-file" style="cursor:pointer">Importar JSON</label>
           <input id="import-file" type="file" accept="application/json" class="sr" />
-          <button class="btn btn-ghost" id="btn-testes" type="button">Autoteste</button>
-          <button class="btn btn-danger" id="btn-reset" type="button">Zerar Dados</button>
+          <button class="btn btn-ghost" id="btn-testes">Autoteste</button>
+          <button class="btn btn-danger" id="btn-reset">Zerar Dados</button>
         </div>
       </div>
 
@@ -125,7 +181,7 @@
           <div class="card"><h3>Orçamento Usado</h3><div class="kpi" id="kpi-orcamento">R$ 0</div><div class="sub" id="kpi-orcamento-sub">Previsto R$ 0</div></div>
           <div class="card"><h3>Percentual Usado</h3><div class="kpi" id="kpi-perc">0%</div><div class="sub" id="kpi-saldo">Saldo: R$ 0</div></div>
           <div class="card"><h3>Dias até o Casamento</h3><div class="kpi" id="kpi-dias">–</div><div class="sub" id="kpi-data"></div></div>
-          <div class="card"><h3>Convidados Confirmados</h3><div class="kpi" id="kpi-convidados">0</div><div class="sub" id="kpi-total-convidados">0 no total</div></div>
+          <div class="card"><h3>Convidados</h3><div class="kpi" id="kpi-convidados">0</div><div class="sub" id="kpi-total-convidados">0 no total</div></div>
         </div>
 
         <div class="grid cols-4" style="margin-top:16px">
@@ -133,13 +189,6 @@
           <div class="card"><h3>Padrinhos</h3><div class="kpi-sm" id="kpi-padrinhos-conf">0 confirmados</div><div class="sub" id="kpi-padrinhos-total">0 casais</div></div>
           <div class="card"><h3>Fornecedores</h3><div class="kpi-sm" id="kpi-forn-fechados">0 contratados</div><div class="sub" id="kpi-forn-total">0 no total</div></div>
           <div class="card"><h3>Presentes</h3><div class="kpi-sm" id="kpi-presentes-ok">0 recebidos</div><div class="sub" id="kpi-presentes-total">0 itens</div></div>
-        </div>
-
-        <div class="grid cols-4" style="margin-top:16px">
-          <div class="card"><h3>Gasto Médio por Item</h3><div class="kpi-sm" id="kpi-gasto-medio">R$ 0</div><div class="sub" id="kpi-gasto-medio-sub">base: itens financeiros</div></div>
-          <div class="card"><h3>Itens Pagos</h3><div class="kpi-sm" id="kpi-itens-pagos">0</div><div class="sub" id="kpi-itens-totais">0 itens</div></div>
-          <div class="card"><h3>Próximo Prazo</h3><div class="kpi-sm" id="kpi-prox-prazo">–</div><div class="sub" id="kpi-prox-prazo-sub">tarefa pendente</div></div>
-          <div class="card"><h3>Risco Orçamento</h3><div class="kpi-sm" id="kpi-risco">Baixo</div><div class="sub" id="kpi-risco-sub">de acordo com uso</div></div>
         </div>
 
         <div class="grid cols-2" style="margin-top:16px">
@@ -153,7 +202,7 @@
           <div class="card">
             <div class="section-header">
               <h3>Tarefas Próximas</h3>
-              <button class="btn btn-primary" onclick="openModal('tarefas')" type="button">+ Nova Tarefa</button>
+              <button class="btn btn-primary" onclick="openModal('tarefas')">+ Nova Tarefa</button>
             </div>
             <table class="table" id="table-tarefas-proximas">
               <thead><tr><th>Tarefa</th><th>Responsável</th><th>Prazo</th><th>Status</th></tr></thead>
@@ -167,7 +216,7 @@
       <section id="view-financeiro" class="view" hidden>
         <div class="section-header">
           <h2 style="margin:0">Financeiro</h2>
-          <button class="btn btn-primary" onclick="openModal('financeiro')" type="button">+ Lançamento</button>
+          <button class="btn btn-primary" onclick="openModal('financeiro')">+ Lançamento</button>
         </div>
         <table class="table" id="table-financeiro">
           <thead>
@@ -183,7 +232,7 @@
       <section id="view-tarefas" class="view" hidden>
         <div class="section-header">
           <h2 style="margin:0">Tarefas</h2>
-          <button class="btn btn-primary" onclick="openModal('tarefas')" type="button">+ Nova</button>
+          <button class="btn btn-primary" onclick="openModal('tarefas')">+ Nova</button>
         </div>
         <table class="table" id="table-tarefas">
           <thead><tr><th>Tarefa</th><th>Responsável</th><th>Prazo</th><th>Status</th><th>Obs</th><th></th></tr></thead>
@@ -195,7 +244,7 @@
       <section id="view-convidados" class="view" hidden>
         <div class="section-header">
           <h2 style="margin:0">Convidados</h2>
-          <button class="btn btn-primary" onclick="openModal('convidados')" type="button">+ Adicionar</button>
+          <button class="btn btn-primary" onclick="openModal('convidados')">+ Adicionar</button>
         </div>
         <table class="table" id="table-convidados">
           <thead><tr><th>Nome</th><th>Acompanhantes</th><th>Contato</th><th>Confirmação</th><th>Mesa</th><th>Obs</th><th></th></tr></thead>
@@ -203,11 +252,11 @@
         </table>
       </section>
 
-      <!-- PADRINHOS (lado a lado) -->
+      <!-- PADRINHOS -->
       <section id="view-padrinhos" class="view" hidden>
         <div class="section-header">
           <h2 style="margin:0">Padrinhos & Madrinhas</h2>
-          <button class="btn btn-primary" onclick="openModal('padrinhos')" type="button">+ Adicionar</button>
+          <button class="btn btn-primary" onclick="openModal('padrinhos')">+ Adicionar</button>
         </div>
         <table class="table" id="table-padrinhos">
           <thead>
@@ -225,7 +274,7 @@
       <section id="view-fornecedores" class="view" hidden>
         <div class="section-header">
           <h2 style="margin:0">Fornecedores</h2>
-          <button class="btn btn-primary" onclick="openModal('fornecedores')" type="button">+ Adicionar</button>
+          <button class="btn btn-primary" onclick="openModal('fornecedores')">+ Adicionar</button>
         </div>
         <table class="table" id="table-fornecedores">
           <thead><tr><th>Nome</th><th>Serviço</th><th>Contato</th><th>Valor</th><th>Pagamento</th><th>Avaliação</th><th>Documento</th><th></th></tr></thead>
@@ -237,7 +286,7 @@
       <section id="view-presentes" class="view" hidden>
         <div class="section-header">
           <h2 style="margin:0">Presentes</h2>
-          <button class="btn btn-primary" onclick="openModal('presentes')" type="button">+ Adicionar</button>
+          <button class="btn btn-primary" onclick="openModal('presentes')">+ Adicionar</button>
         </div>
         <table class="table" id="table-presentes">
           <thead><tr><th>Item</th><th>Loja/Link</th><th>Valor</th><th>Status</th><th>Agradecimento</th><th></th></tr></thead>
@@ -245,7 +294,7 @@
         </table>
       </section>
 
-      <!-- CONFIG -->
+      <!-- CONFIG/TEMAS -->
       <section id="view-config" class="view" hidden>
         <div class="card">
           <h3>Configurações Gerais</h3>
@@ -271,9 +320,6 @@
               <button class="btn btn-ghost" id="btn-editor-tema" type="button">Editor de Tema</button>
             </div>
           </div>
-          <div class="sub" style="margin-top:10px">
-            Dica: tema e dados ficam salvos no navegador (localStorage) por domínio. Use sempre o mesmo link (ideal: https).
-          </div>
         </div>
 
         <div class="card">
@@ -285,7 +331,7 @@
     </main>
   </div>
 
-  <!-- Modal CRUD -->
+  <!-- Modal Genérico de CRUD -->
   <div class="modal" id="modal">
     <div class="panel">
       <header>
@@ -300,7 +346,7 @@
     </div>
   </div>
 
-  <!-- Modal Tema -->
+  <!-- Modal Editor de Tema -->
   <div class="modal" id="theme-modal">
     <div class="panel">
       <header>
@@ -315,7 +361,7 @@
             <input class="input" id="theme-name" placeholder="Nome do tema (ex: Azul Royal)" style="flex:1" />
             <button class="btn btn-primary" id="btn-save-theme" type="button">Salvar Tema</button>
             <button class="btn btn-ghost" id="btn-apply-theme" type="button">Aplicar Agora</button>
-            <button class="btn btn-ghost" id="btn-reset-theme" type="button">Restaurar Padrão</button>
+            <button class="btn btn-ghost" id="btn-reset-theme" type="button">Restaurar</button>
           </div>
           <div id="contrast-msg" class="sub" style="margin-top:8px"></div>
         </div>
@@ -346,9 +392,37 @@
     </div>
   </div>
 
-  <script>
+  <!-- APP SCRIPT -->
+  <script type="module">
     // =====================
-    // Errorbar
+    // Firebase (CDN Modules)
+    // =====================
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import {
+      getAuth, onAuthStateChanged, signInWithEmailAndPassword,
+      createUserWithEmailAndPassword, signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+    import {
+      getFirestore, doc, getDoc, setDoc, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+    // Seu config (o mesmo que você me mandou)
+    const firebaseConfig = {
+      apiKey: "AIzaSyD50ACzA16hyAcX_g05_baUUWd3PIUDn84",
+      authDomain: "casamento-404a3.firebaseapp.com",
+      projectId: "casamento-404a3",
+      storageBucket: "casamento-404a3.firebasestorage.app",
+      messagingSenderId: "665596777998",
+      appId: "1:665596777998:web:ce4e15aaf040285c9d0e5f",
+      measurementId: "G-JS0ZNXLYQV"
+    };
+
+    const fbApp = initializeApp(firebaseConfig);
+    const auth = getAuth(fbApp);
+    const db = getFirestore(fbApp);
+
+    // =====================
+    // Diagnóstico: error bar
     // =====================
     const errorbar = document.getElementById('errorbar');
     const errorbarMsg = document.getElementById('errorbar-msg');
@@ -361,57 +435,118 @@
     window.addEventListener('unhandledrejection', (e)=> showError(e.reason?.message || String(e.reason || 'Promise rejeitada')));
 
     // =====================
-    // Persistência (NUNCA volta seed)
+    // Persistência: Local + Cloud
     // =====================
-    const LS_KEY = 'wedding-manager-v7';
+    const LS_KEY = 'wedding-manager-local-v1';
+    const CLOUD_DOC_ID = 'main'; // doc fixo do usuário
 
     const defaultState = {
-      _meta: { seeded: false },
       settings:{date:'', budget:0, currency:'R$', theme:'ocean', customThemes:[]},
       financeiro:[], tarefas:[], convidados:[], padrinhos:[], fornecedores:[], presentes:[]
     };
 
-    function deepMerge(base, incoming){
-      if (!incoming || typeof incoming !== 'object') return structuredClone(base);
-      const out = Array.isArray(base) ? [] : {};
-      const keys = new Set([...Object.keys(base), ...Object.keys(incoming)]);
-      keys.forEach(k=>{
-        const bv = base[k];
-        const iv = incoming[k];
-        if (Array.isArray(bv)) out[k] = Array.isArray(iv) ? iv : structuredClone(bv);
-        else if (bv && typeof bv === 'object') out[k] = deepMerge(bv, iv);
-        else out[k] = (iv === undefined) ? bv : iv;
-      });
-      return out;
+    let state = loadLocal();
+    let currentUser = null;
+    let cloudLoadedOnce = false;
+    let saveTimer = null;
+
+    function structuredCloneSafe(obj){
+      try{ return structuredClone(obj); } catch { return JSON.parse(JSON.stringify(obj)); }
     }
 
-    function load(){
+    function loadLocal(){
       try{
         const raw = localStorage.getItem(LS_KEY);
-        const parsed = raw ? JSON.parse(raw) : null;
-        return deepMerge(defaultState, parsed);
+        return raw ? JSON.parse(raw) : structuredCloneSafe(defaultState);
       }catch(e){
         showError('Falha ao carregar LocalStorage: ' + e.message);
-        return structuredClone(defaultState);
+        return structuredCloneSafe(defaultState);
       }
     }
 
-    let state = load();
-
-    function save(noRender=false){
+    function saveLocal(){
       try{
         localStorage.setItem(LS_KEY, JSON.stringify(state));
-        if(!noRender) renderAll();
       }catch(e){
         showError('Falha ao salvar LocalStorage: ' + e.message);
       }
+    }
+
+    function cloudDocRef(uid){
+      // /users/{uid}  (documento único com um campo "state")
+      return doc(db, 'users', uid);
+    }
+
+    function setCloudStatus(msg){
+      const el = document.getElementById('cloud-status');
+      if(el) el.textContent = msg;
+    }
+
+    async function loadFromCloud(uid){
+      setCloudStatus('Carregando da nuvem…');
+      const ref = cloudDocRef(uid);
+      const snap = await getDoc(ref);
+      if(!snap.exists()){
+        // Primeira vez: não existe nada no cloud. Envia o que tiver local (ou seed depois)
+        setCloudStatus('Primeiro acesso: criando dados na nuvem…');
+        await writeToCloud(uid, state, true);
+        cloudLoadedOnce = true;
+        setCloudStatus('Sincronizado (criado)');
+        return;
+      }
+      const data = snap.data();
+      if(data && data.state){
+        state = data.state;
+        saveLocal();
+        cloudLoadedOnce = true;
+        setCloudStatus('Sincronizado (carregado)');
+        renderAll();
+      } else {
+        // Documento existe mas sem "state" válido
+        setCloudStatus('Documento inválido: recriando…');
+        await writeToCloud(uid, state, true);
+        cloudLoadedOnce = true;
+        setCloudStatus('Sincronizado');
+      }
+    }
+
+    async function writeToCloud(uid, newState, immediate=false){
+      if(!uid) return;
+      const ref = cloudDocRef(uid);
+      const payload = {
+        state: newState,
+        updatedAt: serverTimestamp()
+      };
+      await setDoc(ref, payload, { merge: true });
+      if(immediate) setCloudStatus('Sincronizado (salvo)');
+      else setCloudStatus('Sincronizado');
+    }
+
+    function scheduleCloudSave(){
+      // Debounce: evita salvar a cada clique / digitação
+      if(!currentUser || !cloudLoadedOnce) return;
+      if(saveTimer) clearTimeout(saveTimer);
+      setCloudStatus('Salvando…');
+      saveTimer = setTimeout(async ()=>{
+        try{
+          await writeToCloud(currentUser.uid, state, true);
+        }catch(e){
+          setCloudStatus('Falha ao salvar na nuvem (backup local ok)');
+          showError('Falha ao salvar na nuvem: ' + e.message);
+        }
+      }, 450);
+    }
+
+    function save(){
+      saveLocal();
+      renderAll();
+      scheduleCloudSave();
     }
 
     // =====================
     // Temas
     // =====================
     const THEME_KEYS = ['bg','bg2','panel','panel2','stroke','text','muted','brand','brand2'];
-
     const BUILTIN_THEMES = {
       ocean:{ bg:'#0b1020', bg2:'#0a0f1e', panel:'#121832', panel2:'#0f1326', stroke:'#263253', text:'#e9ecf1', muted:'#9aa3b2', brand:'#6aa2ff', brand2:'#8bd3ff'},
       rose: { bg:'#1c0b13', bg2:'#1a0a12', panel:'#2a1020', panel2:'#1d0d17', stroke:'#3a1427', text:'#ffeaf1', muted:'#f4b6c8', brand:'#ff6aa6', brand2:'#ffc1d6'},
@@ -422,23 +557,15 @@
       const custom=(state.settings.customThemes||[]).find(t=>t.name===name);
       return custom ? custom.vars : (BUILTIN_THEMES[name]||BUILTIN_THEMES.ocean);
     }
-
+    function applyThemeByName(name){ applyTheme(getThemeVarsByName(name)); }
     function applyTheme(vars){
       const r=document.documentElement;
       const base = BUILTIN_THEMES.ocean;
       THEME_KEYS.forEach(k=> r.style.setProperty('--'+k, (vars && vars[k]) ? vars[k] : base[k]));
     }
 
-    function applyThemeByName(name){
-      applyTheme(getThemeVarsByName(name));
-    }
-
     // Helpers
-    const fmtMoney=(v)=>{
-      const cur=state.settings.currency||'R$';
-      const n=Number(v||0);
-      return cur+' '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-    };
+    const fmtMoney=(v)=>{ const cur=state.settings.currency||'R$'; const n=Number(v||0); return cur+' '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); };
     const byDateAsc=(a,b)=> new Date(a.prazo||a.data||0) - new Date(b.prazo||b.data||0);
 
     // =====================
@@ -472,12 +599,14 @@
       const r=new FileReader();
       r.onload=()=>{
         try{
-          const incoming = JSON.parse(r.result);
-          state = deepMerge(defaultState, incoming);
-          state._meta = { seeded: true }; // evita seed
+          const imported = JSON.parse(r.result);
+          // Merge defensivo com default (evita quebrar se faltar campo)
+          state = { ...structuredCloneSafe(defaultState), ...imported };
+          state.settings = { ...structuredCloneSafe(defaultState.settings), ...(imported.settings||{}) };
           save();
+          alert('Importado com sucesso!');
         }catch(err){
-          alert('Arquivo inválido.');
+          alert('Arquivo inválido');
         }
       };
       r.readAsText(f);
@@ -486,13 +615,7 @@
 
     document.getElementById('btn-reset').addEventListener('click',()=>{
       if(confirm('Tem certeza que deseja ZERAR todos os dados?')){
-        const keep = {
-          _meta: { seeded: true },       // CRÍTICO: não voltar seed
-          settings: state.settings       // mantém tema/data/orçamento/moeda
-        };
-        state = deepMerge(defaultState, keep);
-        state.financeiro=[]; state.tarefas=[]; state.convidados=[];
-        state.padrinhos=[]; state.fornecedores=[]; state.presentes=[];
+        state=structuredCloneSafe(defaultState);
         save();
       }
     });
@@ -545,14 +668,14 @@
         {key:'pago',label:'Valor Pago',type:'number'},
         {key:'data',label:'Data Pagamento',type:'date'},
         {key:'status',label:'Status',type:'select',options:['pendente','50% pago','pago']},
-        {key:'obs',label:'Observações',type:'textarea'}
+        {key:'obs',label:'Observações'}
       ],
       tarefas:[
         {key:'tarefa',label:'Tarefa'},
         {key:'responsavel',label:'Responsável'},
         {key:'prazo',label:'Prazo',type:'date'},
         {key:'status',label:'Status',type:'select',options:['❌','⏳','✅']},
-        {key:'obs',label:'Observações',type:'textarea'}
+        {key:'obs',label:'Observações'}
       ],
       convidados:[
         {key:'nome',label:'Nome'},
@@ -560,7 +683,7 @@
         {key:'contato',label:'Contato'},
         {key:'confirmacao',label:'Confirmação',type:'select',options:['Pendente','Confirmado','Recusou']},
         {key:'mesa',label:'Mesa'},
-        {key:'obs',label:'Observações',type:'textarea'}
+        {key:'obs',label:'Observações'}
       ],
       padrinhos:[
         {key:'padrinho',label:'Nome do Padrinho'},
@@ -569,7 +692,7 @@
         {key:'madrinha',label:'Nome da Madrinha'},
         {key:'madrinha_lado',label:'Lado (Madrinha)',type:'select',options:['Noivo','Noiva']},
         {key:'madrinha_conf',label:'Confirmação (Madrinha)',type:'select',options:['Pendente','Confirmado','Recusou']},
-        {key:'obs',label:'Observações',type:'textarea'}
+        {key:'obs',label:'Observações'}
       ],
       fornecedores:[
         {key:'nome',label:'Nome'},
@@ -589,7 +712,7 @@
       ]
     };
 
-    function openModal(section,index=null){
+    window.openModal = function(section,index=null){
       modalCtx={section,index};
       modalTitle.textContent=(index===null?'Novo ':'Editar ')+section.slice(0,1).toUpperCase()+section.slice(1);
       modalForm.innerHTML='';
@@ -598,13 +721,11 @@
 
       schema.forEach(field=>{
         const wrap=document.createElement('div');
-
         const label=document.createElement('label');
         label.textContent=field.label;
         wrap.appendChild(label);
 
         let input;
-
         if(field.type==='select'){
           input=document.createElement('select');
           input.className='input';
@@ -613,18 +734,13 @@
             o.value=op; o.textContent=op;
             input.appendChild(o);
           });
-          input.value=values[field.key] ?? field.options[0];
-        } else if(field.type==='textarea'){
-          input=document.createElement('textarea');
-          input.className='input';
-          input.value=values[field.key] ?? '';
+          input.value=(values[field.key] ?? field.options[0]);
         } else {
           input=document.createElement('input');
           input.className='input';
           input.type=field.type||'text';
-          input.value=values[field.key] ?? '';
+          input.value=(values[field.key] ?? '');
         }
-
         input.name=field.key;
         wrap.appendChild(input);
         modalForm.appendChild(wrap);
@@ -633,20 +749,13 @@
       modal.classList.add('show');
     }
 
-    function closeModal(){ modal.classList.remove('show'); }
+    window.closeModal = function(){ modal.classList.remove('show'); }
 
     document.getElementById('modal-save').addEventListener('click',()=>{
       try{
+        const data=Object.fromEntries(new FormData(modalForm).entries());
         const section=modalCtx.section;
-
-        // coleta dados
-        const data = {};
-        modalForm.querySelectorAll('[name]').forEach(el=>{
-          data[el.name] = el.value;
-        });
-
-        // tipos numéricos
-        ['previsto','pago','valor','acompanhantes'].forEach(k=>{
+        ['previsto','pago','valor','avaliacao','acompanhantes'].forEach(k=>{
           if(data[k]!==undefined) data[k]=Number(data[k]||0);
         });
 
@@ -655,22 +764,15 @@
         if(modalCtx.index===null){
           state[section].push(data);
         } else {
-          state[section][modalCtx.index] = {...state[section][modalCtx.index], ...data};
+          state[section][modalCtx.index]={...state[section][modalCtx.index],...data};
         }
 
         save();
-        closeModal();
+        window.closeModal();
       }catch(e){
         showError('Falha ao salvar modal: '+e.message);
       }
     });
-
-    function delItem(section,idx){
-      if(confirm('Excluir este registro?')){
-        state[section].splice(idx,1);
-        save();
-      }
-    }
 
     // =====================
     // Renderizações
@@ -690,15 +792,6 @@
       document.getElementById('kpi-perc').textContent=(budget? perc:0)+'%';
       document.getElementById('kpi-saldo').textContent='Saldo: '+fmtMoney(saldo);
 
-      // risco
-      const riscoEl = document.getElementById('kpi-risco');
-      const riscoSub = document.getElementById('kpi-risco-sub');
-      if(!budget){ riscoEl.textContent='Indefinido'; riscoSub.textContent='defina orçamento'; }
-      else if(totalPago>budget){ riscoEl.textContent='Alto'; riscoSub.textContent='acima do orçamento'; }
-      else if(totalPago>budget*0.85){ riscoEl.textContent='Médio'; riscoSub.textContent='acima de 85%'; }
-      else riscoEl.textContent='Baixo', riscoSub.textContent='abaixo de 85%';
-
-      // data
       const dateStr=state.settings.date;
       const outDate=document.getElementById('kpi-data');
       const outDias=document.getElementById('kpi-dias');
@@ -711,47 +804,28 @@
         outDate.textContent='Defina a data em Configurações';
       }
 
-      // convidados
       const totalConv=state.convidados.length;
       const conf=state.convidados.filter(c=>c.confirmacao==='Confirmado').length;
       document.getElementById('kpi-convidados').textContent=conf;
       document.getElementById('kpi-total-convidados').textContent=`${totalConv} no total`;
 
-      // tarefas
       const pend=state.tarefas.filter(t=>t.status!=='✅').length;
       const ok=state.tarefas.filter(t=>t.status==='✅').length;
       document.getElementById('kpi-tarefas-pend').textContent=pend+' pendentes';
       document.getElementById('kpi-tarefas-ok').textContent=ok+' concluídas';
 
-      // padrinhos
-      const padrConf=state.padrinhos.filter(p=>p.padrinho_conf==='Confirmado'&&p.madrinha_conf==='Confirmado').length;
+      const padrConf=state.padrinhos.filter(p=>p.padrinho_conf==='Confirmado' && p.madrinha_conf==='Confirmado').length;
       document.getElementById('kpi-padrinhos-conf').textContent=padrConf+' confirmados';
       document.getElementById('kpi-padrinhos-total').textContent=state.padrinhos.length+' casais';
 
-      // fornecedores
       const fornFech=state.fornecedores.filter(f=>String(f.pagamento||'').toLowerCase().includes('pago')).length;
       document.getElementById('kpi-forn-fechados').textContent=fornFech+' contratados';
       document.getElementById('kpi-forn-total').textContent=state.fornecedores.length+' no total';
 
-      // presentes
       const prezOk=state.presentes.filter(p=>p.status==='Entregue').length;
       document.getElementById('kpi-presentes-ok').textContent=prezOk+' recebidos';
       document.getElementById('kpi-presentes-total').textContent=state.presentes.length+' itens';
 
-      // gastos médios
-      const itensFin = state.financeiro.length;
-      document.getElementById('kpi-itens-pagos').textContent = state.financeiro.filter(x=>Number(x.pago||0)>0).length;
-      document.getElementById('kpi-itens-totais').textContent = `${itensFin} itens`;
-      const medio = itensFin ? (totalPago / itensFin) : 0;
-      document.getElementById('kpi-gasto-medio').textContent = fmtMoney(medio);
-      document.getElementById('kpi-gasto-medio-sub').textContent = `base: ${itensFin} itens`;
-
-      // próximo prazo
-      const prox = state.tarefas.filter(t=>t.status!=='✅' && t.prazo).sort(byDateAsc)[0];
-      document.getElementById('kpi-prox-prazo').textContent = prox?.prazo ? new Date(prox.prazo).toLocaleDateString('pt-BR') : '–';
-      document.getElementById('kpi-prox-prazo-sub').textContent = prox?.tarefa ? prox.tarefa : 'sem prazos definidos';
-
-      // pill
       const pill=document.getElementById('pill-saldo');
       if(budget && totalPago>budget){ pill.textContent='Acima do Orçamento'; pill.className='pill danger'; }
       else if(budget && totalPago>budget*0.8){ pill.textContent='Atenção ao Orçamento'; pill.className='pill warn'; }
@@ -761,12 +835,12 @@
       const tbody=document.querySelector('#table-tarefas-proximas tbody');
       tbody.innerHTML='';
       state.tarefas
-        .filter(t=>t.status!=='✅'&&t.prazo)
+        .filter(t=>t.status!=='✅' && t.prazo)
         .sort(byDateAsc)
         .slice(0,6)
         .forEach(t=>{
           const tr=document.createElement('tr');
-          tr.innerHTML=`<td>${escapeHtml(t.tarefa||'')}</td><td>${escapeHtml(t.responsavel||'')}</td><td>${escapeHtml(t.prazo||'')}</td><td>${escapeHtml(t.status||'')}</td>`;
+          tr.innerHTML=`<td>${t.tarefa||''}</td><td>${t.responsavel||''}</td><td>${t.prazo||''}</td><td>${t.status||''}</td>`;
           tbody.appendChild(tr);
         });
 
@@ -785,64 +859,45 @@
         const cat=i.categoria||'Outros';
         byCat[cat]=(byCat[cat]||0)+Number(i.pago||0);
       });
-
       const labels=Object.keys(byCat);
       const data=Object.values(byCat);
 
       if(chartCategorias){ chartCategorias.destroy(); }
       chartCategorias=new Chart(ctx,{
         type:'bar',
-        data:{ labels, datasets:[{
-          data,
-          backgroundColor:grad,
-          borderColor:brand,
-          borderWidth:1.5,
-          borderRadius:10,
-          hoverBorderWidth:2
-        }]},
+        data:{ labels, datasets:[{ data, backgroundColor:grad, borderColor:brand, borderWidth:1.5, borderRadius:8, hoverBorderWidth:2 }]},
         options:{
-          responsive:true,
           animation:{duration:900, easing:'easeOutQuart'},
-          plugins:{
-            legend:{display:false},
-            tooltip:{callbacks:{label:(c)=>' '+fmtMoney(c.raw)}}
-          },
-          scales:{
-            x:{ grid:{display:false}, ticks:{color:'rgba(255,255,255,.75)'} },
-            y:{ beginAtZero:true, grid:{color:'rgba(255,255,255,.06)'}, ticks:{color:'rgba(255,255,255,.75)'} }
-          }
+          plugins:{legend:{display:false}, tooltip:{callbacks:{label:(c)=>' '+fmtMoney(c.raw)}}},
+          scales:{ x:{ grid:{display:false}}, y:{ beginAtZero:true, grid:{color:'rgba(255,255,255,.06)'} } }
         }
       });
-    }
-
-    function escapeHtml(s){
-      return String(s ?? '')
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;')
-        .replaceAll('"','&quot;')
-        .replaceAll("'","&#039;");
     }
 
     function renderTable(section, tableId, cols){
       const tbody=document.querySelector('#'+tableId+' tbody');
       tbody.innerHTML='';
-      state[section].forEach((row,idx)=>{
+      (state[section]||[]).forEach((row,idx)=>{
         const tr=document.createElement('tr');
         const tds=cols.map(k=>{
-          let v=row[k]??'';
+          let v=row?.[k] ?? '';
           if(['previsto','pago','valor'].includes(k)) v=fmtMoney(v);
-          return `<td>${escapeHtml(v)}</td>`;
+          return `<td>${v}</td>`;
         }).join('');
-        const actions=`<td>
-          <div class="row-actions">
-            <button class="btn btn-ghost" onclick="openModal('${section}',${idx})" type="button">Editar</button>
-            <button class="btn btn-danger" onclick="delItem('${section}',${idx})" type="button">Excluir</button>
-          </div>
-        </td>`;
+        const actions=`<td><div class="row-actions">
+          <button class="btn btn-ghost" onclick="openModal('${section}',${idx})" type="button">Editar</button>
+          <button class="btn btn-danger" onclick="delItem('${section}',${idx})" type="button">Excluir</button>
+        </div></td>`;
         tr.innerHTML=tds+actions;
         tbody.appendChild(tr);
       });
+    }
+
+    window.delItem = function(section,idx){
+      if(confirm('Excluir este registro?')){
+        state[section].splice(idx,1);
+        save();
+      }
     }
 
     function renderFinanceiro(){ renderTable('financeiro','table-financeiro',['categoria','fornecedor','previsto','pago','data','status','obs']); }
@@ -852,19 +907,17 @@
     function renderPadrinhos(){
       const tbody=document.querySelector('#table-padrinhos tbody');
       tbody.innerHTML='';
-      state.padrinhos.forEach((row,idx)=>{
+      (state.padrinhos||[]).forEach((row,idx)=>{
         const tr=document.createElement('tr');
         const cells=[
           row.padrinho||'',row.padrinho_lado||'',row.padrinho_conf||'',
           row.madrinha||'',row.madrinha_lado||'',row.madrinha_conf||'',
           row.obs||''
-        ].map(v=>`<td>${escapeHtml(v)}</td>`).join('');
-        const actions=`<td>
-          <div class="row-actions">
-            <button class="btn btn-ghost" onclick="openModal('padrinhos',${idx})" type="button">Editar</button>
-            <button class="btn btn-danger" onclick="delItem('padrinhos',${idx})" type="button">Excluir</button>
-          </div>
-        </td>`;
+        ].map(v=>`<td>${v}</td>`).join('');
+        const actions=`<td><div class="row-actions">
+          <button class="btn btn-ghost" onclick="openModal('padrinhos',${idx})" type="button">Editar</button>
+          <button class="btn btn-danger" onclick="delItem('padrinhos',${idx})" type="button">Excluir</button>
+        </div></td>`;
         tr.innerHTML=cells+actions;
         tbody.appendChild(tr);
       });
@@ -882,26 +935,26 @@
         card.innerHTML=`
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
             <div>
-              <strong>${escapeHtml(t.name)}</strong>
+              <strong>${t.name}</strong>
               <div class="sub">Tema personalizado</div>
             </div>
             <div class="swatches">${THEME_KEYS.slice(0,6).map(k=>`<span class='chip' title='${k}' style='background:${t.vars[k]};'></span>`).join('')}</div>
             <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <button class="btn btn-ghost" onclick="applyCustomTheme('${escapeHtml(t.name).replaceAll("&#039;","\\'")}')" type="button">Aplicar</button>
-              <button class="btn btn-danger" onclick="deleteCustomTheme('${escapeHtml(t.name).replaceAll("&#039;","\\'")}')" type="button">Excluir</button>
+              <button class="btn btn-ghost" onclick="applyCustomTheme('${t.name}')" type="button">Aplicar</button>
+              <button class="btn btn-danger" onclick="deleteCustomTheme('${t.name}')" type="button">Excluir</button>
             </div>
           </div>`;
         wrap.appendChild(card);
       });
     }
 
-    function applyCustomTheme(name){
+    window.applyCustomTheme = function(name){
       state.settings.theme=name;
       applyThemeByName(name);
       save();
     }
 
-    function deleteCustomTheme(name){
+    window.deleteCustomTheme = function(name){
       if(!confirm('Excluir o tema "'+name+'"?')) return;
       state.settings.customThemes=(state.settings.customThemes||[]).filter(t=>t.name!==name);
       if(state.settings.theme===name) state.settings.theme='ocean';
@@ -929,7 +982,7 @@
     }
 
     // =====================
-    // Editor de Tema (PRO)
+    // Editor de Tema
     // =====================
     const themeModal=document.getElementById('theme-modal');
     const themeForm=document.getElementById('theme-form');
@@ -939,12 +992,13 @@
       themeForm.innerHTML='';
       const current=getThemeVarsByName(state.settings.theme||'ocean');
       const groups=[['bg','bg2'],['panel','panel2','stroke'],['text','muted'],['brand','brand2']];
-      groups.forEach(gs=> gs.forEach(k=> themeForm.appendChild(colorRow(k,current[k])) ));
+      groups.forEach(gs=>{ gs.forEach(k=> themeForm.appendChild(colorRow(k,current[k])) ); });
       updateSwatches(current);
       livePreview(current);
       themeModal.classList.add('show');
     }
-    function closeThemeModal(){ themeModal.classList.remove('show'); }
+
+    window.closeThemeModal = function(){ themeModal.classList.remove('show'); }
 
     function colorRow(key,val){
       const wrap=document.createElement('div');
@@ -960,12 +1014,9 @@
       color.type='color';
       color.value=val;
       color.dataset.key=key;
-      color.style.width='52px';
+      color.style.width='48px';
       color.style.height='42px';
       color.style.padding='0';
-      color.style.background='transparent';
-      color.style.border='1px solid var(--stroke)';
-      color.style.borderRadius='10px';
 
       const text=document.createElement('input');
       text.className='input';
@@ -974,7 +1025,12 @@
       text.placeholder='#RRGGBB';
 
       color.addEventListener('input',()=>{ text.value=color.value; livePreview(readThemeForm()); });
-      text.addEventListener('input',()=>{ if(/^#([0-9a-f]{3}){1,2}$/i.test(text.value)) { color.value=text.value; livePreview(readThemeForm()); }});
+      text.addEventListener('input',()=>{
+        if(/^#([0-9a-f]{3}){1,2}$/i.test(text.value)) {
+          color.value=text.value;
+          livePreview(readThemeForm());
+        }
+      });
 
       row.appendChild(color);
       row.appendChild(text);
@@ -984,7 +1040,6 @@
 
     function readThemeForm(){
       const vars={};
-      // apenas os inputs hex (com dataset)
       [...themeForm.querySelectorAll('input[data-key]')].forEach(i=> vars[i.dataset.key]=i.value );
       return vars;
     }
@@ -1052,65 +1107,154 @@
     function runSelfTests(){
       const results=[];
       results.push(assert('THEME_KEYS inclui bg2/panel2/brand2', ['bg2','panel2','brand2'].every(k=>THEME_KEYS.includes(k))));
-      results.push(assert('Função openModal existe', typeof openModal==='function'));
+      results.push(assert('Função openModal existe', typeof window.openModal==='function'));
       results.push(assert('renderConvidados não quebra', (()=>{ try{ renderConvidados(); return true; }catch(e){ return false; } })()));
       results.push(assert('Temas padrão >= 3', Object.keys(BUILTIN_THEMES).length>=3));
-      results.push(assert('LocalStorage acessível', (()=>{ try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); return true; }catch(e){ return false; } })()));
+      results.push(assert('Local save ok', (()=>{ try{ saveLocal(); return true; }catch(e){ return false; } })()));
       const fails = results.filter(r=>!r.pass);
       alert(fails.length ? 'Falhas:\n'+fails.map(f=>'• '+f.name).join('\n') : `Todos os testes passaram! (${results.length}/${results.length})`);
     }
     document.getElementById('btn-testes').addEventListener('click', runSelfTests);
 
     // =====================
-    // Boot (seed 1x só)
+    // Seed (apenas se estiver zerado)
     // =====================
-    (function boot(){
-      try{
-        // aplica tema logo
-        applyThemeByName(state.settings.theme || 'ocean');
-
-        if(!state._meta?.seeded){
-          state._meta = { seeded: true };
-
-          // seed inicial (apenas 1 vez). Se você não quiser exemplos, pode apagar.
-          state.settings = { ...state.settings, date:'2026-06-20', budget:80000, currency:'R$', theme:'ocean', customThemes:[] };
-
-          state.financeiro.push(
-            {categoria:'Buffet', fornecedor:'Sabor & Festa', previsto:18000, pago:9000, data:'2026-02-10', status:'50% pago', obs:'Cardápio fechado'},
-            {categoria:'Decoração', fornecedor:'Flora Bella', previsto:7200, pago:0, data:'', status:'pendente', obs:'Ensaio 15/02'},
-            {categoria:'Música', fornecedor:'DJ Leo', previsto:3000, pago:0, data:'', status:'pendente', obs:'Playlist em andamento'}
-          );
-          state.tarefas.push(
-            {tarefa:'Fechar local', responsavel:'Noiva', prazo:'2026-01-30', status:'✅', obs:'Confirmado'},
-            {tarefa:'Escolher bolo', responsavel:'Ambos', prazo:'2026-02-20', status:'⏳', obs:'Degustação 12/02'},
-            {tarefa:'Enviar convites', responsavel:'Noivo', prazo:'2026-03-15', status:'❌', obs:'Aguardar lista final'}
-          );
-          state.convidados.push(
-            {nome:'João e Maria', acompanhantes:2, contato:'(99) 99999-9999', confirmacao:'Confirmado', mesa:'3', obs:''},
-            {nome:'Pedro Silva', acompanhantes:1, contato:'(99) 88888-8888', confirmacao:'Pendente', mesa:'', obs:'Aguardando confirmação'}
-          );
-          state.padrinhos.push(
-            {padrinho:'Carlos', padrinho_lado:'Noiva', padrinho_conf:'Confirmado', madrinha:'Ana', madrinha_lado:'Noiva', madrinha_conf:'Confirmado', obs:'Disponíveis 14/03'},
-            {padrinho:'Lucas', padrinho_lado:'Noivo', padrinho_conf:'Pendente', madrinha:'Paula', madrinha_lado:'Noivo', madrinha_conf:'Pendente', obs:'Viagem no período'}
-          );
-          state.fornecedores.push(
-            {nome:'Buffet Sabor & Festa', servico:'Alimentação', contato:'(99) 90000-0001', valor:18000, pagamento:'50% pago', avaliacao:'4', documento:'contrato.pdf'},
-            {nome:'DJ Leo', servico:'Música', contato:'(99) 91111-1111', valor:3000, pagamento:'Pendente', avaliacao:'5', documento:''}
-          );
-          state.presentes.push(
-            {item:'Conjunto de panelas', loja:'Magazine Luiza', valor:600, status:'Entregue', agradecimento:'✅'},
-            {item:'Passagem Lua de Mel', loja:'Amigo João', valor:2000, status:'Pendente', agradecimento:'❌'}
-          );
-
-          save(); // salva e renderiza
-          return;
-        }
-
-        renderAll();
-      }catch(e){
-        showError('Falha no boot: '+e.message);
+    function seedIfEmpty(){
+      const s=state;
+      if((s.financeiro?.length||0)===0 && (s.tarefas?.length||0)===0 && (s.convidados?.length||0)===0){
+        s.settings={...s.settings, date:'2026-06-20', budget:80000, currency:'R$', theme:'ocean'};
+        s.financeiro.push(
+          {categoria:'Buffet', fornecedor:'Sabor & Festa', previsto:18000, pago:9000, data:'2026-02-10', status:'50% pago', obs:'Cardápio fechado'},
+          {categoria:'Decoração', fornecedor:'Flora Bella', previsto:7200, pago:0, data:'', status:'pendente', obs:'Ensaio 15/02'},
+          {categoria:'Música', fornecedor:'DJ Leo', previsto:3000, pago:0, data:'', status:'pendente', obs:'Playlist em andamento'}
+        );
+        s.tarefas.push(
+          {tarefa:'Fechar local', responsavel:'Noiva', prazo:'2026-01-30', status:'✅', obs:'Confirmado'},
+          {tarefa:'Escolher bolo', responsavel:'Ambos', prazo:'2026-02-20', status:'⏳', obs:'Degustação 12/02'},
+          {tarefa:'Enviar convites', responsavel:'Noivo', prazo:'2026-03-15', status:'❌', obs:'Aguardar lista final'}
+        );
+        s.convidados.push(
+          {nome:'João e Maria', acompanhantes:2, contato:'(99) 99999-9999', confirmacao:'Confirmado', mesa:'3', obs:''},
+          {nome:'Pedro Silva', acompanhantes:1, contato:'(99) 88888-8888', confirmacao:'Pendente', mesa:'', obs:'Aguardando confirmação'}
+        );
+        s.padrinhos.push(
+          {padrinho:'Carlos', padrinho_lado:'Noiva', padrinho_conf:'Confirmado', madrinha:'Ana', madrinha_lado:'Noiva', madrinha_conf:'Confirmado', obs:'Disponíveis 14/03'},
+          {padrinho:'Lucas', padrinho_lado:'Noivo', padrinho_conf:'Pendente', madrinha:'Paula', madrinha_lado:'Noivo', madrinha_conf:'Pendente', obs:'Viagem no período'}
+        );
+        s.fornecedores.push(
+          {nome:'Buffet Sabor & Festa', servico:'Alimentação', contato:'(99) 90000-0001', valor:18000, pagamento:'50% pago', avaliacao:'4', documento:'contrato.pdf'},
+          {nome:'DJ Leo', servico:'Música', contato:'(99) 91111-1111', valor:3000, pagamento:'Pendente', avaliacao:'5', documento:''}
+        );
+        s.presentes.push(
+          {item:'Conjunto de panelas', loja:'Magazine Luiza', valor:600, status:'Entregue', agradecimento:'✅'},
+          {item:'Passagem Lua de Mel', loja:'Amigo João', valor:2000, status:'Pendente', agradecimento:'❌'}
+        );
+        save();
       }
-    })();
+    }
+
+    // =====================
+    // AUTH UI
+    // =====================
+    const authWrap = document.getElementById('auth-wrap');
+    const appEl = document.getElementById('app');
+    const authMsg = document.getElementById('auth-msg');
+    const authStatus = document.getElementById('auth-status');
+
+    function setAuthMessage(msg, isBad=false){
+      authMsg.textContent = msg || '';
+      authMsg.style.color = isBad ? '#fecaca' : '';
+    }
+
+    function lockApp(){
+      authWrap.classList.add('show');
+      appEl.style.filter = 'blur(8px)';
+      appEl.style.pointerEvents = 'none';
+      appEl.style.userSelect = 'none';
+      setCloudStatus('Aguardando login…');
+    }
+
+    function unlockApp(email){
+      authWrap.classList.remove('show');
+      appEl.style.filter = '';
+      appEl.style.pointerEvents = '';
+      appEl.style.userSelect = '';
+      document.getElementById('user-email').textContent = email || '–';
+    }
+
+    document.getElementById('btn-login').addEventListener('click', async ()=>{
+      const email = document.getElementById('auth-email').value.trim();
+      const pass = document.getElementById('auth-pass').value;
+      if(!email || !pass) return setAuthMessage('Informe email e senha.', true);
+      setAuthMessage('Entrando…');
+      try{
+        await signInWithEmailAndPassword(auth, email, pass);
+      }catch(e){
+        setAuthMessage(e.message, true);
+      }
+    });
+
+    document.getElementById('btn-signup').addEventListener('click', async ()=>{
+      const email = document.getElementById('auth-email').value.trim();
+      const pass = document.getElementById('auth-pass').value;
+      if(!email || !pass) return setAuthMessage('Informe email e senha.', true);
+      if(pass.length < 6) return setAuthMessage('A senha precisa ter pelo menos 6 caracteres.', true);
+      setAuthMessage('Criando conta…');
+      try{
+        await createUserWithEmailAndPassword(auth, email, pass);
+      }catch(e){
+        setAuthMessage(e.message, true);
+      }
+    });
+
+    document.getElementById('btn-logout').addEventListener('click', async ()=>{
+      await signOut(auth);
+    });
+
+    document.getElementById('btn-cloud-sync').addEventListener('click', async ()=>{
+      if(!currentUser) return;
+      try{
+        setCloudStatus('Sincronizando…');
+        await loadFromCloud(currentUser.uid);
+      }catch(e){
+        setCloudStatus('Falha ao sincronizar (backup local ok)');
+        showError('Falha ao sincronizar: ' + e.message);
+      }
+    });
+
+    // =====================
+    // Boot
+    // =====================
+    applyThemeByName(state.settings.theme||'ocean');
+    renderAll();
+
+    // Auth state
+    onAuthStateChanged(auth, async (user)=>{
+      if(!user){
+        currentUser = null;
+        cloudLoadedOnce = false;
+        authStatus.textContent = '🔒 Faça login para sincronizar';
+        lockApp();
+        return;
+      }
+
+      currentUser = user;
+      authStatus.textContent = '✅ Conectado';
+      unlockApp(user.email);
+
+      // Primeiro, garante que não vamos “seedar” por cima do cloud
+      try{
+        await loadFromCloud(user.uid);
+        // Se vier vazio mesmo assim, podemos seedar
+        seedIfEmpty();
+      }catch(e){
+        setCloudStatus('Falha ao carregar nuvem (usando local)');
+        // Sem cloud, mantém local e deixa o usuário usar.
+        cloudLoadedOnce = true; // permite salvar quando voltar
+        seedIfEmpty();
+        renderAll();
+      }
+    });
   </script>
 </body>
 </html>
